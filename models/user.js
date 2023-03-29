@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+let Post = require('../models/post')
 
 const UserSchema = new mongoose.Schema({
     userId : {
@@ -18,7 +18,16 @@ const UserSchema = new mongoose.Schema({
       email : {
         type : String,
         required : true
-      }
+      },
+      friendList: 
+      [{
+        type: Number,
+
+      }],
+      postList:
+      [{
+        type:mongoose.Schema.Types.ObjectId ,ref:'Post'  
+      }]
 })
 
 UserSchema.pre('save', async function(next) {

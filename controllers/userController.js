@@ -15,7 +15,7 @@ const addUser = async(req, res, next) => {
   
       newUser
         .save()
-        .then(() => res.status(201).json({ message: "User added!" }))
+        .then(() => res.status(201).json({newUser}))
         .catch((err) => res.status(401).json("Error: " + err));
 }
 
@@ -31,5 +31,16 @@ const getUser = async(req, res, next) => {
       }
 }
 
+const getAll = async(req,res,next) => {
+  try {
+    User.find()
+      .then((user) => res.status(201).json(user))
+      .catch((err) => res.status(401).json("Error: " + err));
+  }
+  catch (err) {
+    return next(new HttpError(err.message, 401));
+  }
+}
 exports.addUser = addUser
 exports.getUser = getUser
+exports.getAll = getAll
