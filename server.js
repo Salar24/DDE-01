@@ -5,7 +5,7 @@ const cors = require('cors');
 const userRoutes = require('./routes/userRoutes')
 const masterRoutes = require('./routes/masterRoutes')
 const mongoose = require('mongoose')
-const mongoURL = "mongodb+srv://dbuser:1234abcd@cluster0.gz9pknp.mongodb.net/DDE-01?retryWrites=true&w=majority" 
+const mongoURL = "mongodb://127.0.0.1:27017/DDE-01" 
 const User = require('./models/user')
 
 

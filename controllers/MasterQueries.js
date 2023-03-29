@@ -111,11 +111,15 @@ function addingLikes(users, posts)
             newLike.save()
             console.log("After creating like")
             posts[i].likeList = posts[i].likeList || []
-            posts[i].likeList.push(likeId)
+            posts[i].likeList.push(newLike)
             loopCount = loopCount + 1
         }
         posts[i].save()
     }
+    
+}
+function addingComments(users, posts)
+{
     
 }
 const addRandomData = async(req, res, next) => {
@@ -131,6 +135,7 @@ const addRandomData = async(req, res, next) => {
         const userListNew = await User.find().populate('postList')
         const postList = await Post.find()
         addingLikes(userListNew, postList)
+        addingComments(userListNew, postList)
         
          res.status(201).json(1)
          return
@@ -146,6 +151,7 @@ const deleteData = async(req,res,next) => {
     const topics = await Topic.deleteMany({})
     const posts = await Post.deleteMany({})
     const likes = await Like.deleteMany({})
+    const comments = await Comment.deleteMany({})
     res.status(201).json(1)
     return
 }
