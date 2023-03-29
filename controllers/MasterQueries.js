@@ -2,6 +2,7 @@ const HttpError = require ('../models/http-error');
 const User = require('../models/user');
 const Post = require('../models/post')
 const Comment = require('../models/comment')
+const Like = require('../models/like')
 const Topic = require('../models/topic')
 const { faker } = require('@faker-js/faker');
 
@@ -58,10 +59,6 @@ function addingPosts(userList, topicList) {
             random2 = 0
         }
 
-        console.log(random1)
-        console.log(random2)
-        console.log(userList[random1].userId)
-        console.log(topicList[random2]._id)
         const postId = k
         const description = faker.lorem.paragraph()
         const posterId = userList[random1].userId
@@ -92,6 +89,35 @@ function addingPosts(userList, topicList) {
         topicList[i].save()
     }
 }
+
+function addingLikes(users, posts) 
+{
+    var k = 0
+    var likeId = 0
+    for(let i=0;i<posts.length;i++)
+    {
+        const floatRandom = Math.random()
+        var random1 = Math.round(5 * floatRandom)
+        let loopCount = 0;
+        while(loopCount < random1)
+        {
+            console.log(likeId)
+            const postId = posts[i].postId
+            const likerId = Math.round(users.length * floatRandom) -1
+            const newLike = new Like({
+                postId, likerId, likeId
+            })
+            likeId = likeId + 1
+            newLike.save()
+            console.log("After creating like")
+            posts[i].likeList = posts[i].likeList || []
+            posts[i].likeList.push(likeId)
+            loopCount = loopCount + 1
+        }
+        posts[i].save()
+    }
+    
+}
 const addRandomData = async(req, res, next) => {
     try {
         const userSize = 20
@@ -102,6 +128,9 @@ const addRandomData = async(req, res, next) => {
         const userList = await User.find()
         
         addingPosts(userList, topicList)
+        const userListNew = await User.find().populate('postList')
+        const postList = await Post.find()
+        addingLikes(userListNew, postList)
         
          res.status(201).json(1)
          return
@@ -116,6 +145,7 @@ const deleteData = async(req,res,next) => {
     const users = await User.deleteMany({})
     const topics = await Topic.deleteMany({})
     const posts = await Post.deleteMany({})
+    const likes = await Like.deleteMany({})
     res.status(201).json(1)
     return
 }

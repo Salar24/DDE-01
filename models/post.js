@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 
 let User = require('../models/user')
 let Topic = require('../models/topic')
+let Like = require('../models/like')
 
 const PostSchema = new mongoose.Schema({
     postId : {
@@ -20,16 +21,17 @@ const PostSchema = new mongoose.Schema({
         type: String,
         required: true
       },
-      likes : {
-        type : Number,
-        required : true
-      },
       comments : [
         {
             type: Number,
             required: true
         }
-      ]               
+      ],    
+      likeList : [
+        {
+          type : mongoose.Schema.Types.ObjectId, ref : "Like"
+        }
+      ]           
 })
 
 PostSchema.pre('save', async function(next) {
