@@ -7,6 +7,7 @@ const masterRoutes = require('./routes/masterRoutes')
 const mongoose = require('mongoose')
 const mongoURL = "mongodb://127.0.0.1:27017/DDE-01" 
 const User = require('./models/user')
+const queryRoutes = require('./routes/QueryRoutes')
 
 
 mongoose.connect(mongoURL);
@@ -21,6 +22,7 @@ connection.once('open', () => {
 app.use(express.json({limit: '50mb'}));
 app.use('/user', userRoutes);
 app.use('/master', masterRoutes )
+app.use('/query', queryRoutes)
 
 //only runs if we get some request which did not get a response from upper middlewares
 app.use((req, res, next)=>{

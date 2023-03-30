@@ -14,13 +14,13 @@ const CommentSchema = new mongoose.Schema({
         required: true
       },
       commenterId: 
-      [{
+      {
       type:mongoose.Schema.Types.ObjectId ,ref:'User'  
-      }],
+      },
       postId:
-      [{
+      {
         type:mongoose.Schema.Types.ObjectId, ref:'Post'
-      }]
+      }
 })
 
 const Comment = mongoose.model('Comment', CommentSchema)

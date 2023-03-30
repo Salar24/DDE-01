@@ -7,7 +7,7 @@ const Topic = require('../models/topic')
 const { faker } = require('@faker-js/faker');
 
 function addingUsers(userSize) {
-    console.log("Generating 15 Users")
+    console.log("Generating 50 Users")
     var k = 1
     for(let i =0; i < userSize; i++)
     {
@@ -42,7 +42,7 @@ function addingPosts(userList, topicList) {
     //Sample Loop
     console.log("In Adding Posts")
     var k = 1
-    for(let i=0; i< 50; i++)
+    for(let i=0; i< 300; i++)
     {
         const floatRandom = Math.random()
 
@@ -170,8 +170,8 @@ function addingComments(users, posts)
 }
 const addRandomData = async(req, res, next) => {
     try {
-        const userSize = 20
-        const topicSize = 5
+        const userSize = 50
+        const topicSize = 10
         addingUsers(userSize)
         addingTopics(topicSize)
         const topicList = await Topic.find()
