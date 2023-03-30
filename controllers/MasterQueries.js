@@ -94,10 +94,12 @@ function addingLikes(users, posts)
 {
     var k = 0
     var likeId = 0
+    var commentId = 0
     for(let i=0;i<posts.length;i++)
     {
         const floatRandom = Math.random()
         var random1 = Math.round(5 * floatRandom)
+        var random2 = Math.round(10 * floatRandom)
         let loopCount = 0;
         while(loopCount < random1)
         {
@@ -114,13 +116,57 @@ function addingLikes(users, posts)
             posts[i].likeList.push(newLike)
             loopCount = loopCount + 1
         }
-        posts[i].save()
+        let loopCount2 = 0
+        while(loopCount2 < random2)
+        {
+            console.log(commentId)
+            const postId = posts[i]._id
+            const commenterId = users[Math.round(users.length * floatRandom) -1]._id
+            const commentDescription = faker.lorem.sentence()
+            const newComment = new Comment({
+                commenterId, commentDescription, commentId, postId
+            })
+            commentId = commentId  + 1
+            newComment.save()
+            console.log("After creating comment")
+            posts[i].comments = posts[i].comments || []
+            posts[i].comments.push(commentId)
+            loopCount2 = loopCount2 + 1
+        }
     }
+    
     
 }
 function addingComments(users, posts)
 {
-    
+    var k = 0
+    var commentId = 0
+    for(let i=0;i<posts.length;i++)
+    {
+        const floatRandom = Math.random()
+        var random1 = Math.round(5 * floatRandom)
+        let loopCount = 0;
+        while(loopCount < random1)
+        {
+            console.log(commentId)
+            const postId = posts[i].postId
+            const commenterId = Math.round(users.length * floatRandom) -1
+            const commentDescription = faker.lorem.sentence()
+            console.log(commentId, postId, commenterId, commentDescription)
+            const newComment = new Comment({
+                commentId, postId, commenterId, commentDescription
+            })
+            commentId = commentId + 1
+            newComment.save()
+            console.log("After Saving comment")
+            posts[i].comments = posts[i].comments || []
+            posts[i].comments.push(commentId)
+            loopCount = loopCount + 1
+        }
+        console.log("Saving Post")
+        console.log(i)
+        posts[i].save()
+    }
 }
 const addRandomData = async(req, res, next) => {
     try {
@@ -135,9 +181,10 @@ const addRandomData = async(req, res, next) => {
         const userListNew = await User.find().populate('postList')
         const postList = await Post.find()
         addingLikes(userListNew, postList)
-        addingComments(userListNew, postList)
         
+        console.log("BAck in function")
          res.status(201).json(1)
+         console.log("After status")
          return
       }
       catch (err) {

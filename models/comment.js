@@ -23,15 +23,5 @@ const CommentSchema = new mongoose.Schema({
       }]
 })
 
-CommentSchema.pre('save', async function(next) {
-    const user = this;
-    if (!user.commentId) {
-      const latestUser = await User.findOne().sort({ commentId: -1 });
-      user.commentId = latestUser ? latestUser.commentId + 1 : 1;
-    }
-    next();
-  });
-  
-
 const Comment = mongoose.model('Comment', CommentSchema)
 module.exports = Comment;
