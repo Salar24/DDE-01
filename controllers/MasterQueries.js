@@ -109,7 +109,7 @@ function addingPosts(userList, topicList) {
         const postId = k
         const description = faker.lorem.paragraph()
         const posterId = userList[random1].userId
-        const topic = topicList[random2]._id
+        const topic = topicList[random2].topicId
 
         const likes = 0
         const newPost = new Post({
@@ -168,7 +168,7 @@ function addingLikes(users, posts)
         {
             console.log(commentId)
             const postId = posts[i]._id
-            const commenterId = users[Math.round(users.length * floatRandom) -1]._id
+            const commenterId = users[Math.round(users.length * floatRandom) -1].userId
             const commentDescription = faker.lorem.sentence()
             const newComment = new Comment({
                 commenterId, commentDescription, commentId, postId

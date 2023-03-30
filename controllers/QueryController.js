@@ -78,6 +78,41 @@ const getTopCommentsOfAUser = async(req,res,next) => {
 
 }
 
+const getAllCommentsByUser = async(req,res,next) => {
+  const commentsQuery = {commenterId : req.params.userId}
+  
+  const comments = await Comment.find(commentsQuery)
+
+  res.status(201).json(comments)
+
+}
+
+const getAllPostsOnATopic = async(req,res,next) => {
+  
+  const posts = await Post.find({topic : req.params.topicId})
+  console.log(posts)
+
+  res.status(201).json(posts)
+}
+
+const topTopics = async(req,res,next) => {
+  const limit = req.params.limit
+  const topics = await Topic.find()
+  topics.sort((a, b) => b.postsIds.length - a.postsIds.length);
+  finalList = []
+  for(let i=0;i<limit;i++)
+  {
+    finalList.push(topics[i].topicDescription)
+  }
+  res.status(201).json(finalList)
+}
+
+
+
 exports.getTopCommentsOfAUser = getTopCommentsOfAUser
 exports.getTopLikesOfUser = getTopLikesOfUser
 exports.getAllPostsOfUser = getAllPostsOfUser
+exports.getAllCommentsByUser = getAllCommentsByUser
+exports.getAllPostsOnATopic = getAllPostsOnATopic
+exports.topTopics = topTopics
+

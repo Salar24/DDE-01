@@ -15,7 +15,8 @@ const CommentSchema = new mongoose.Schema({
       },
       commenterId: 
       {
-      type:mongoose.Schema.Types.ObjectId ,ref:'User'  
+      type: Number,
+      required : true
       },
       postId:
       {

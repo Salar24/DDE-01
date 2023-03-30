@@ -15,7 +15,8 @@ const PostSchema = new mongoose.Schema({
     },
       //The total no. of students in the class (sections combined)
       topic : {
-        type:mongoose.Schema.Types.ObjectId ,ref:'Topic'  
+        type : Number,
+        required : true 
       },
       description : {
         type: String,
