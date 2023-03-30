@@ -24,6 +24,53 @@ function addingUsers(userSize) {
     }
 }
 
+function addingFriends(users)
+{
+    for(let i = 0; i < users.length; i++)
+    {
+        //generate the number of friend
+        const floatRandom = Math.random()
+        var random1 = Math.round(10 * floatRandom) -1
+        if(random1 < 0)
+        {
+            random1 = 0
+        }
+        let loopCount = 0
+        let checkList = []
+        while(loopCount < random1)
+        {
+            const floatRandom = Math.random()
+            var random1 = Math.round(users.length * floatRandom) -1
+            if(random1 < 0)
+            {
+                random1 = 0
+            }
+            if(random1 == users[i].userId)
+            {
+                loopCount = loopCount + 1
+            }
+            else 
+            {
+                if(checkList.includes(random1))
+                {
+                    loopcount = loopCount + 1
+                }
+                else
+                {
+                users[i].friendList = users[i].friendList || []
+                users[i].friendList.push(random1)
+                loopCount = loopCount + 1
+                }
+            }
+        }
+
+    }
+    for(let i=0;i<users.length;i++)
+    {
+        users[i].save()
+    }
+}
+
 function addingTopics(topicSize) {
     var k = 1
     for(let i = 0; i < topicSize; i++)
@@ -134,7 +181,10 @@ function addingLikes(users, posts)
             loopCount2 = loopCount2 + 1
         }
     }
-    
+    for(let i=0;i<posts.length;i++)
+    {
+        posts[i].save()
+    }
     
 }
 function addingComments(users, posts)
@@ -181,7 +231,8 @@ const addRandomData = async(req, res, next) => {
         const userListNew = await User.find().populate('postList')
         const postList = await Post.find()
         addingLikes(userListNew, postList)
-        
+        const userListFinal = await User.find()
+        addingFriends(userListFinal)
         console.log("BAck in function")
          res.status(201).json(1)
          console.log("After status")
