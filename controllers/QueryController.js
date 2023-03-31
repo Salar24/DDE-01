@@ -107,6 +107,38 @@ const topTopics = async(req,res,next) => {
   res.status(201).json(finalList)
 }
 
+const recentPosts = async(req,res,next) => {
+  const queryObject = url.parse(req.url, true).query;
+  const userQuery = {userId : queryObject.userId}
+  const hourLimit = queryObject.hourLimit
+  const tempUser = await User.find(userQuery)
+  console.log(tempUser)
+  console.log(tempUser[0].username)
+  console.log(tempUser[0].friendList)
+  const friends = []
+
+  for(let i=0;i<tempUser[0].friendList.length;i++)
+  {
+    const newFriend = await User.findOne({userId : tempUser[0].friendList[i]}).populate('postList')
+    friends.push(newFriend)
+  }
+  const masterList = []
+  const oneHourAgo = new Date(Date.now() - hourLimit * 60 * 60 * 1000);
+  for(let i=0;i<friends.length;i++)
+  {
+    console.log(friends[i]._id.getTimestamp())
+    for(let k=0;k<friends[i].postList.length;k++)
+    {
+      if(friends[i].postList[k]._id.getTimestamp() >= oneHourAgo)
+      {
+        masterList.push(friends[i].postList[k].description)
+      }
+    }
+  }
+  res.status(201).json(masterList)
+  return
+}
+
 
 
 exports.getTopCommentsOfAUser = getTopCommentsOfAUser
@@ -115,4 +147,5 @@ exports.getAllPostsOfUser = getAllPostsOfUser
 exports.getAllCommentsByUser = getAllCommentsByUser
 exports.getAllPostsOnATopic = getAllPostsOnATopic
 exports.topTopics = topTopics
+exports.recentPosts = recentPosts
 

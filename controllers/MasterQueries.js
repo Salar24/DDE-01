@@ -137,7 +137,7 @@ function addingPosts(userList, topicList) {
     }
 }
 
-function addingLikes(users, posts) 
+function addingLikesAndComments(users, posts) 
 {
     var k = 0
     var likeId = 0
@@ -187,37 +187,7 @@ function addingLikes(users, posts)
     }
     
 }
-function addingComments(users, posts)
-{
-    var k = 0
-    var commentId = 0
-    for(let i=0;i<posts.length;i++)
-    {
-        const floatRandom = Math.random()
-        var random1 = Math.round(5 * floatRandom)
-        let loopCount = 0;
-        while(loopCount < random1)
-        {
-            console.log(commentId)
-            const postId = posts[i].postId
-            const commenterId = Math.round(users.length * floatRandom) -1
-            const commentDescription = faker.lorem.sentence()
-            console.log(commentId, postId, commenterId, commentDescription)
-            const newComment = new Comment({
-                commentId, postId, commenterId, commentDescription
-            })
-            commentId = commentId + 1
-            newComment.save()
-            console.log("After Saving comment")
-            posts[i].comments = posts[i].comments || []
-            posts[i].comments.push(commentId)
-            loopCount = loopCount + 1
-        }
-        console.log("Saving Post")
-        console.log(i)
-        posts[i].save()
-    }
-}
+
 const addRandomData = async(req, res, next) => {
     try {
         const userSize = 50
@@ -230,10 +200,9 @@ const addRandomData = async(req, res, next) => {
         addingPosts(userList, topicList)
         const userListNew = await User.find().populate('postList')
         const postList = await Post.find()
-        addingLikes(userListNew, postList)
+        addingLikesAndComments(userListNew, postList)
         const userListFinal = await User.find()
         addingFriends(userListFinal)
-        console.log("BAck in function")
          res.status(201).json(1)
          console.log("After status")
          return

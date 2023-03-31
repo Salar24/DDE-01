@@ -9,6 +9,7 @@ router.get('/getTopLikesOfUser', QueryController.getTopLikesOfUser)
 router.get('/getTopComments', QueryController.getTopCommentsOfAUser)
 router.get('/getAllCommentsByUser/:userId', QueryController.getAllCommentsByUser)
 router.get('/getAllPostsOnATopic/:topicId', QueryController.getAllPostsOnATopic)
-router.get('/topTopics/:limit', QueryController.topTopics)
+router.get('/topTopics', QueryController.topTopics)
+router.get('/recentPosts', QueryController.recentPosts)
 
 module.exports = router
