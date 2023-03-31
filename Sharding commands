@@ -1,0 +1,32 @@
+cd C:\Program Files\MongoDB\Server\5.0\bin
+
+start mongod --configsvr --replSet dde --logpath \data\r1\1.log --dbpath \data\r1 --port 2001
+
+start mongod --configsvr --replSet dde --logpath \data\r2\2.log --dbpath \data\r2 --port 2002
+
+start mongod --configsvr --replSet dde --logpath \data\r3\3.log --dbpath \data\r3 --port 2003
+
+
+mongo --port 2001
+
+
+config = {_id:"dde", members:[
+{_id:0,host:"localhost:2001"},
+{_id:1,host:"localhost:2002"},
+{_id:2,host:"localhost:2003"}]};
+
+
+rs.initiate(config)
+
+rs.status()
+
+start mongod --shardsvr --port 2005 --logpath \data\shards\s0\log\s0.log --dbpath \data\shards\s0
+
+start mongod --shardsvr --port 2006 --logpath \data\shards\s0\log\s0.log --dbpath \data\shards\s0
+
+sh.addShard("localhost:2005")
+sh.addShard("localhost:2006")
+
+sh.enableSharding("dde")
+
+//Necessary sharding upon collections
