@@ -5,7 +5,7 @@ const cors = require('cors');
 const userRoutes = require('./routes/userRoutes')
 const masterRoutes = require('./routes/masterRoutes')
 const mongoose = require('mongoose')
-const mongoURL = "mongodb://127.0.0.1:27017/DDE-01" 
+const mongoURL = "mongodb://127.0.0.1:27017/local" 
 const User = require('./models/user')
 const queryRoutes = require('./routes/QueryRoutes')
 
